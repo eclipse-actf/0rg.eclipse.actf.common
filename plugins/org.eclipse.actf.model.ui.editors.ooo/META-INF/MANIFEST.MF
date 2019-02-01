@@ -31,6 +31,6 @@ Bundle-ClassPath: .,
  external:${OOO_HOME}\Basis\program\classes\unoil.jar 
  
 Export-Package: org.eclipse.actf.model.ui.editors.ooo
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Automatic-Module-Name: org.eclipse.actf.model.ui.editors.ooo
 Export-Package: org.eclipse.actf.model.ui.editors.ooo
