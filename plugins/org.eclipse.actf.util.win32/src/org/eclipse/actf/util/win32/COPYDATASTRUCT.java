@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,11 +19,11 @@ import org.eclipse.swt.internal.win32.OS;
 public class COPYDATASTRUCT {
 
 	public static final int WM_COPYDATA = 0x4a;
-	public static final int sizeof = 12;
+	public static final int sizeof = 20;
 
-	public int dwData;
+	public long dwData;
 	public int cbData;
-	public int lpData;
+	public long lpData;
 	public byte[] data;
 
 	/**
@@ -32,7 +32,7 @@ public class COPYDATASTRUCT {
 	 * @param dwData
 	 * @param strData
 	 */
-	public COPYDATASTRUCT(int dwData, String strData) {
+	public COPYDATASTRUCT(long dwData, String strData) {
 		this(dwData, strData.getBytes());
 	}
 
@@ -42,7 +42,7 @@ public class COPYDATASTRUCT {
 	 * @param dwData
 	 * @param data
 	 */
-	public COPYDATASTRUCT(int dwData, byte[] data) {
+	public COPYDATASTRUCT(long dwData, byte[] data) {
 		this.dwData = dwData;
 		if (null != data) {
 			this.cbData = data.length;
@@ -56,15 +56,15 @@ public class COPYDATASTRUCT {
 	 * 
 	 * @param lParam
 	 */
-	public COPYDATASTRUCT(int lParam) {
-		int[] pEntries = new int[3];
+	public COPYDATASTRUCT(long lParam) {
+		int[] pEntries = new int[5];
 		OS.MoveMemory(pEntries, lParam, sizeof);
-		dwData = pEntries[0];
-		cbData = pEntries[1];
-		lpData = pEntries[2];
+		dwData = (long)pEntries[1] << 32 | pEntries[0] & 0xFFFFFFFFL;
+		cbData = pEntries[2];
+		lpData = (long)pEntries[4] << 32 | pEntries[3] & 0xFFFFFFFFL;
 		if (0 != lpData && cbData > 0) {
-			data = new byte[cbData];
-			OS.MoveMemory(data, lpData, cbData);
+			data = new byte[(int)cbData];
+			OS.MoveMemory(data, lpData, (int)cbData);
 		} else {
 			data = new byte[0];
 		}
@@ -75,13 +75,13 @@ public class COPYDATASTRUCT {
 	 * 
 	 * @param pData
 	 */
-	private void setData(int pData) {
-		int p = 0;
+	private void setData(long pData) {
+		long p = 0;
 		if (null != data) {
-			p = OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT, cbData);
-			OS.MoveMemory(p, data, cbData);
+			p = OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT, (int) cbData);
+			OS.MoveMemory(p, data, (int) cbData);
 		}
-		OS.MoveMemory(pData, new int[] { dwData, cbData, p }, sizeof);
+		OS.MoveMemory(pData, new long[] { dwData, cbData, p }, sizeof);
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class COPYDATASTRUCT {
 	 *            send data from this window
 	 * @return result code
 	 */
-	public int sendMessage(int hwndTo, int hwndFrom) {
-		int lpData = OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT, sizeof);
+	public long sendMessage(long hwndTo, long hwndFrom) {
+		long lpData = OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT, sizeof);
 		try {
 			setData(lpData);
 			return OS.SendMessage(hwndTo, WM_COPYDATA, hwndFrom, lpData);
@@ -122,6 +122,6 @@ public class COPYDATASTRUCT {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "dwData=" + dwData + ", cbData=" + cbData + ", lpData=0x" + Integer.toHexString(lpData) + ", data=\"" + new String(data) + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		return "dwData=" + dwData + ", cbData=" + cbData + ", lpData=0x" + Long.toHexString(lpData) + ", data=\"" + new String(data) + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 }

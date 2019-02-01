@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ public abstract class WMCMonitor {
 			productName = product.getName();
 		}
 	}
-	private int oldShellProc = 0;
+	private long oldShellProc = 0;
 
 	/**
 	 * Create a WMCMonitor with default title
@@ -54,15 +54,15 @@ public abstract class WMCMonitor {
 			Shell activeShell = display.getActiveShell();
 			if (null != activeShell) {
 				Callback callback = new Callback(this, "shellWindowProc", 4); //$NON-NLS-1$
-				int address = callback.getAddress();
+				long address = callback.getAddress();
 				if (address != 0) {
 					final Shell shell = new Shell();
 					shell.setVisible(false);
 					shell.setBounds(0, 0, 0, 0);
 					shell.setText(title);
-					oldShellProc = OS.GetWindowLong(shell.handle,
+					oldShellProc = OS.GetWindowLongPtr(shell.handle,
 							OS.GWL_WNDPROC);
-					OS.SetWindowLong(shell.handle, OS.GWL_WNDPROC, address);
+					OS.SetWindowLongPtr(shell.handle, OS.GWL_WNDPROC, address);
 					activeShell.addDisposeListener(new DisposeListener() {
 						public void widgetDisposed(DisposeEvent e) {
 							shell.dispose();
@@ -84,12 +84,12 @@ public abstract class WMCMonitor {
 	 * @param lParam
 	 * @return
 	 */
-	int shellWindowProc(int hwnd, int msg, int wParam, int lParam) {
+	long shellWindowProc(long hwnd, long msg, long wParam, long lParam) {
 		try {
 			if (COPYDATASTRUCT.WM_COPYDATA == msg) {
 				return onCopyData(hwnd, wParam, new COPYDATASTRUCT(lParam));
 			}
-			return OS.CallWindowProc(oldShellProc, hwnd, msg, wParam, lParam);
+			return OS.CallWindowProc(oldShellProc, hwnd, (int)msg, wParam, lParam);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,6 +104,6 @@ public abstract class WMCMonitor {
 	 * @param cds
 	 * @return 1 if processed
 	 */
-	protected abstract int onCopyData(int hwnd, int hwndFrom, COPYDATASTRUCT cds);
+	protected abstract long onCopyData(long hwnd, long hwndFrom, COPYDATASTRUCT cds);
 
 }

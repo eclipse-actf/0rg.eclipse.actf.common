@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,8 @@ import org.eclipse.swt.internal.ole.win32.IPersist;
 
 
 public class IPersistFile extends IPersist {
-    private int address;
-    public IPersistFile(int address) {
+    private long address;
+    public IPersistFile(long address) {
         super(address);
         this.address = address;
     }
@@ -28,7 +28,7 @@ public class IPersistFile extends IPersist {
     public int Load(int pszFilename, int dwMode) {
         return COM.VtblCall(5, address, pszFilename, dwMode);
     }
-    public int Save(int pszFilename, boolean fRemember) {
+    public int Save(long pszFilename, boolean fRemember) {
         return COM.VtblCall(6, address, pszFilename, fRemember);
     }
     public int SaveCompleted(int pszFilename) {

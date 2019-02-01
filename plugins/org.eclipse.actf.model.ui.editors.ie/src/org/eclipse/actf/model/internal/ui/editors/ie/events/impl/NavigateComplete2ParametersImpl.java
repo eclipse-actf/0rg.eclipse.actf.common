@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ public class NavigateComplete2ParametersImpl extends AbstractEventParameters imp
     public NavigateComplete2ParametersImpl(OleEvent event) {
         super(event);
         if( Platform.inDebugMode() ) {
-            int     dispBrowser =     getBrowserAddress();
+            long     dispBrowser =     getBrowserAddress();
             String  url =             getUrl();
             System.out.println("NavigateComplete2("+dispBrowser+",\""+url+")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
@@ -36,7 +36,7 @@ public class NavigateComplete2ParametersImpl extends AbstractEventParameters imp
     /* (non-Javadoc)
      * @see org.eclipse.actf.model.ui.editors.ie.events.NavigateComplete2Parameters#getBrowserAddress()
      */
-    public int getBrowserAddress() {
+    public long getBrowserAddress() {
         return getDispatchAddress(INDEX_Browser);
     }
 

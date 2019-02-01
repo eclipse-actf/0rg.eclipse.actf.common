@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,9 @@
 package org.eclipse.actf.model.internal.ui.editors.ie.events.impl;
 
 import org.eclipse.actf.util.win32.MemoryUtil;
+import org.eclipse.swt.internal.ole.win32.COM;
+import org.eclipse.swt.internal.win32.OS;
+import org.eclipse.swt.ole.win32.OLE;
 import org.eclipse.swt.ole.win32.OleAutomation;
 import org.eclipse.swt.ole.win32.OleControlSite;
 import org.eclipse.swt.ole.win32.OleEvent;
@@ -78,7 +81,7 @@ public abstract class AbstractEventParameters {
     
     protected int getIntegerByRef(int index) {
         try {
-            int byRef = event.arguments[index].getByRef();
+            long byRef = event.arguments[index].getByRef();
             if( 0 != byRef ) {
                 int[] pValue = new int[1];
                 MemoryUtil.MoveMemory(pValue, byRef, 4);
@@ -91,16 +94,22 @@ public abstract class AbstractEventParameters {
         return 0;
     }
     
-    protected void setIntegerByRef(int index, int value) {
+    protected void setIntegerByRef(int index, long value) {
         try {
-            event.arguments[index].setByRef(value);
+//          event.arguments[index].setByRef(value);
+            short type = event.arguments[index].getType();
+            if (type != COM.VT_BYREF + COM.VT_DISPATCH) {
+                OLE.error(OLE.ERROR_CANNOT_CHANGE_VARIANT_TYPE);
+            }
+            long byRefPtr = event.arguments[index].getByRef();
+            COM.MoveMemory(byRefPtr, new long /*int*/[]{value}, OS.PTR_SIZEOF);
         }
         catch( Exception e ) {
             e.printStackTrace();
         }
     }
     
-    protected int getDispatchAddress(int index) {
+    protected long getDispatchAddress(int index) {
         try {
             return event.arguments[index].getDispatch().getAddress();
         }
@@ -110,7 +119,7 @@ public abstract class AbstractEventParameters {
         return 0;
     }
     
-    protected int getControlSiteAddress() {
+    protected long getControlSiteAddress() {
         if( event.widget instanceof OleControlSite ) {
             Variant varWebSite = new Variant(new OleAutomation((OleControlSite)(event.widget)));
             try {

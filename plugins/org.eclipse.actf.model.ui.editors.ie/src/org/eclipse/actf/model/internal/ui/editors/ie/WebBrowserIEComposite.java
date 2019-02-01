@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -77,7 +77,7 @@ public class WebBrowserIEComposite extends Composite {
 
 	static final String BROWSER_PROGID = "Shell.Explorer"; //$NON-NLS-1$
 
-	private int oldProc = 0;
+	private long oldProc = 0;
 
 	private boolean isClosed = false;
 
@@ -240,10 +240,10 @@ public class WebBrowserIEComposite extends Composite {
 		// for JavaScript window.close()
 
 		Callback callback = new Callback(this, "siteWindowProc", 4); //$NON-NLS-1$
-		int address = callback.getAddress();
+		long address = callback.getAddress();
 		if (address != 0) {
-			oldProc = OS.GetWindowLong(site.handle, OS.GWL_WNDPROC);
-			OS.SetWindowLong(site.handle, OS.GWL_WNDPROC, address);
+			oldProc = OS.GetWindowLongPtr(site.handle, OS.GWL_WNDPROC);
+			OS.SetWindowLongPtr(site.handle, OS.GWL_WNDPROC, address);
 		} else {
 			callback.dispose();
 		}
@@ -466,7 +466,7 @@ public class WebBrowserIEComposite extends Composite {
 		return false;
 	}
 
-	public int getBrowserAddress() {
+	public long getBrowserAddress() {
 		Variant variant = new Variant(auto);
 		return variant.getDispatch().getAddress();
 	}
@@ -668,11 +668,11 @@ public class WebBrowserIEComposite extends Composite {
 
 	private static boolean saveDocument(Variant varDocument, String fileName) {
 		if (OLE.VT_DISPATCH == varDocument.getType()) {
-			int[] pPersistFile = new int[1];
+			long[] pPersistFile = new long[1];
 			try {
 				if (OLE.S_OK == varDocument.getDispatch().QueryInterface(
 						COM.IIDIPersistFile, pPersistFile)) {
-					int pStrAddress = COM
+					long pStrAddress = COM
 							.SysAllocString((fileName + "\0").toCharArray()); //$NON-NLS-1$
 					try {
 						return OLE.S_OK == new IPersistFile(pPersistFile[0])
@@ -902,7 +902,7 @@ public class WebBrowserIEComposite extends Composite {
 	 * @param lParam
 	 * @return
 	 */
-	int siteWindowProc(int hwnd, int msg, int wParam, int lParam) {
+	long siteWindowProc(long hwnd, long msg, long wParam, long lParam) {
 		try {
 			if (!isClosed && OS.WM_PARENTNOTIFY == msg
 					&& wParam == OS.WM_DESTROY) {
@@ -910,7 +910,7 @@ public class WebBrowserIEComposite extends Composite {
 				onWindowClosed();
 				return 0;
 			}
-			return OS.CallWindowProc(oldProc, hwnd, msg, wParam, lParam);
+			return OS.CallWindowProc(oldProc, hwnd, (int)msg, wParam, lParam);
 		} catch (Exception e) {
 			System.out.println("error: siteWindowProc"); //$NON-NLS-1$
 			// e.printStackTrace();
@@ -929,7 +929,7 @@ public class WebBrowserIEComposite extends Composite {
 			}
 			sb.append(i + ":"); //$NON-NLS-1$
 			if ((OLE.VT_BYREF | OLE.VT_VARIANT) == args[i].getType()) {
-				int byRef = args[i].getByRef();
+				long byRef = args[i].getByRef();
 				short[] dataType = new short[1];
 				COM.MoveMemory(dataType, byRef, 2);
 				String strType = ""; //$NON-NLS-1$

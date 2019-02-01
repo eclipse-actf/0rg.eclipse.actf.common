@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2016 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -309,7 +309,7 @@ public class OOoWindowComposite extends Composite {
 					if (xSystemChildFactory != null) {
 						byte[] procID = new byte[0];
 						XWindowPeer xWindowPeer = xSystemChildFactory
-								.createSystemChild(new Integer(parent.handle),
+								.createSystemChild(new Long(parent.handle),
 										procID, SystemDependent.SYSTEM_WIN32);
 						if (xWindowPeer != null) {
 							xWindow = (XWindow) UnoRuntime.queryInterface(

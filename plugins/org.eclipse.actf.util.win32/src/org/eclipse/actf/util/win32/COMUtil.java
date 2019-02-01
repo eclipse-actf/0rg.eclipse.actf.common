@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,8 +37,8 @@ public class COMUtil {
 	 *            GUID
 	 * @return dispatch object
 	 */
-	public static int createDispatch(GUID rclsid) {
-		int[] ppv = new int[1];
+	public static long createDispatch(GUID rclsid) {
+		long[] ppv = new long[1];
 		int result = COM.CoCreateInstance(rclsid, 0, COM.CLSCTX_INPROC_HANDLER
 				| COM.CLSCTX_INPROC_SERVER | COM.CLSCTX_LOCAL_SERVER
 				| COM.CLSCTX_REMOTE_SERVER, COM.IIDIDispatch, ppv);
@@ -58,7 +58,7 @@ public class COMUtil {
 	 *            argument 0
 	 * @return hresult
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0);
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0);
 
 	/**
 	 * @param fnNumber
@@ -69,7 +69,7 @@ public class COMUtil {
 	 *            argument 1
 	 * @return
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0,
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
 			int arg1);
 
 	/**
@@ -83,7 +83,7 @@ public class COMUtil {
 	 *            argument 2
 	 * @return
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0,
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
 			int arg1, int arg2);
 
 	/**
@@ -99,7 +99,7 @@ public class COMUtil {
 	 *            argument 3
 	 * @return
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0,
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
 			int arg1, int arg2, int arg3);
 
 	/**
@@ -117,7 +117,7 @@ public class COMUtil {
 	 *            argument 4
 	 * @return
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0,
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
 			int arg1, int arg2, int arg3, int arg4);
 
 	/**
@@ -137,7 +137,7 @@ public class COMUtil {
 	 *            argument 5
 	 * @return
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0,
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
 			int arg1, int arg2, int arg3, int arg4, int arg5);
 
 	/**
@@ -159,7 +159,7 @@ public class COMUtil {
 	 *            argument 6
 	 * @return
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0,
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
 			int arg1, int arg2, int arg3, int arg4, int arg5, int arg6);
 
 	/**
@@ -183,9 +183,28 @@ public class COMUtil {
 	 *            argument 7
 	 * @return
 	 */
-	public static final native int VtblCall(int fnNumber, int ppVtbl, int arg0,
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
 			int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7);
 
+	/* TODO */
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
+			int arg1, int arg2, long arg3);
+	
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
+			int arg1, long arg2, long arg3);
+	
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
+			long arg1, long arg2, long arg3);
+	
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
+			int arg1, long arg2, long arg3, long arg4);
+	
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
+			int arg1, long arg2, long arg3, long arg4, long arg5);
+	
+	public static final native int VtblCall(int fnNumber, long /*int*/ ppVtbl, int arg0,
+			long arg1, long arg2, long arg3, long arg4, long arg5);
+	
 	/**
 	 * Create GUID from target String
 	 * 

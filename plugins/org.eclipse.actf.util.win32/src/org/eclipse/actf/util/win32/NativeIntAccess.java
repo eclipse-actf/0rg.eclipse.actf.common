@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.actf.util.win32;
  * Utility class to access native integer
  */
 public class NativeIntAccess {
-	private int pIntAddress = 0;
+	private long pIntAddress = 0;
 
 	/**
 	 * Default Constructor (size=1)
@@ -44,7 +44,7 @@ public class NativeIntAccess {
 	/**
 	 * @return native address (index=0)
 	 */
-	public int getAddress() {
+	public long getAddress() {
 		return getAddress(0);
 	}
 
@@ -53,7 +53,7 @@ public class NativeIntAccess {
 	 *            target index
 	 * @return native address
 	 */
-	public int getAddress(int index) {
+	public long getAddress(int index) {
 		return pIntAddress + index * 4;
 	}
 

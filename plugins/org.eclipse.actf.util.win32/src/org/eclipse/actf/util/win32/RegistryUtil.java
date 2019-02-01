@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,13 +25,13 @@ public class RegistryUtil {
 
 	private static final int KEY_READ = 0x20019;
 
-	public static final int HKEY_CLASSES_ROOT = 0x80000000;
-	public static final int HKEY_CURRENT_USER = 0x80000001;
-	public static final int HKEY_LOCAL_MACHINE = 0x80000002;
+	public static final long HKEY_CLASSES_ROOT = 0x80000000L;
+	public static final long HKEY_CURRENT_USER = 0x80000001L;
+	public static final long HKEY_LOCAL_MACHINE = 0x80000002L;
 
-	public static int getRegistryInt(int hKeyParent, String subKeyString,
+	public static int getRegistryInt(long hKeyParent, String subKeyString,
 			String valueString) {
-		int hKey = open(hKeyParent, subKeyString, 0, KEY_READ);
+		long hKey = open(hKeyParent, subKeyString, 0, KEY_READ);
 		if (0 != hKey) {
 			try {
 				return getIntegerValue(hKey, valueString);
@@ -42,9 +42,9 @@ public class RegistryUtil {
 		return 0;
 	}
 
-	public static String getRegistryString(int hKeyParent, String subKeyString,
+	public static String getRegistryString(long hKeyParent, String subKeyString,
 			String valueString) {
-		int hKey = open(hKeyParent, subKeyString, 0, KEY_READ);
+		long hKey = open(hKeyParent, subKeyString, 0, KEY_READ);
 		if (0 != hKey) {
 			try {
 				return getStringValue(hKey, valueString);
@@ -55,10 +55,10 @@ public class RegistryUtil {
 		return null;
 	}
 
-	private static int open(int hKeyParent, String subKeyString, int ulOptions,
+	private static long open(long hKeyParent, String subKeyString, int ulOptions,
 			int samDesired) {
 		TCHAR keyName = new TCHAR(0, subKeyString, true);
-		int[] phKey = new int[1];
+		long[] phKey = new long[1];
 		if (0 == OS.RegOpenKeyEx(hKeyParent, keyName, ulOptions, samDesired,
 				phKey)) {
 			return phKey[0];
@@ -66,11 +66,11 @@ public class RegistryUtil {
 		return 0;
 	}
 
-	private static int close(int hKey) {
+	private static int close(long hKey) {
 		return OS.RegCloseKey(hKey);
 	}
 
-	private static int getIntegerValue(int hKey, String valueString) {
+	private static int getIntegerValue(long hKey, String valueString) {
 		TCHAR valueName = new TCHAR(0, valueString, true);
 		int[] pcbData = new int[] { 4 };
 		int[] pType = new int[1];
@@ -83,7 +83,7 @@ public class RegistryUtil {
 		return 0;
 	}
 
-	private static String getStringValue(int hKey, String valueString) {
+	private static String getStringValue(long hKey, String valueString) {
 		TCHAR valueName = new TCHAR(0, valueString, true);
 		int[] pcbData = new int[1];
 		int[] pType = new int[1];

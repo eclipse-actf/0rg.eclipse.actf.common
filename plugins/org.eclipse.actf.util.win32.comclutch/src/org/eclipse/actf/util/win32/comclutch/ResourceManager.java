@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,8 @@ public class ResourceManager {
 	 *         is not found.
 	 */
 	public IResource findInResource(long ptr) {
-		int idx = (int) ptr % HASHSIZE;
+//		int idx = (int) ptr % HASHSIZE;
+		int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE);
 		WeakReference<IResource> wr = resourceHashArray[idx];
 		if (wr == null)
 			return null;
@@ -81,7 +82,8 @@ public class ResourceManager {
 	 */
 	public void removeResource(IResource resource) {
 		long ptr = resource.getPtr();
-		int idx = (int) ptr % HASHSIZE;
+//		int idx = (int) ptr % HASHSIZE;
+		int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE);
 		WeakReference<IResource> wr = resourceHashArray[idx];
 		if (wr == null)
 			return;
@@ -103,7 +105,8 @@ public class ResourceManager {
 	 */
 	public void addResource(IResource target) {
 		long ptr = target.getPtr();
-		int idx = (int) ptr % HASHSIZE;
+//		int idx = (int) ptr % HASHSIZE;
+		int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE);
 		WeakReference<IResource> wr = new WeakReference<IResource>(target);
 		resourceHashArray[idx] = wr;
 		return;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import org.eclipse.swt.internal.win32.OS;
 
 public class WSTR {
 
-    private int address = 0;
+    private long address = 0;
     private String string = null;
     
     public WSTR() {
@@ -28,7 +28,7 @@ public class WSTR {
         setString(newString);
     }
     
-    public WSTR(int newAddress) {
+    public WSTR(long newAddress) {
         setData(newAddress);
     }
     
@@ -46,7 +46,7 @@ public class WSTR {
         return string;
     }
     
-    public void setData(int newAddress) {
+    public void setData(long newAddress) {
         if( address != newAddress ) {
             dispose();
             address = newAddress;
@@ -63,7 +63,7 @@ public class WSTR {
         
     }
     
-    public int getAddress() {
+    public long getAddress() {
         return address;
     }
     

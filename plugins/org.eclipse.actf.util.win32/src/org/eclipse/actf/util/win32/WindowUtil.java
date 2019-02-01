@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,10 @@ import org.eclipse.swt.internal.win32.TCHAR;
 @SuppressWarnings("restriction")
 public class WindowUtil {
 
-	public static final int HWND_TOP = OS.HWND_TOP;
-	public static final int HWND_TOPMOST = OS.HWND_TOPMOST;
-	public static final int HWND_NOTOPMOST = OS.HWND_NOTOPMOST;
-	public static final int HWND_BOTTOM = OS.HWND_BOTTOM;
+	public static final long HWND_TOP = OS.HWND_TOP;
+	public static final long HWND_TOPMOST = OS.HWND_TOPMOST;
+	public static final long HWND_NOTOPMOST = OS.HWND_NOTOPMOST;
+	public static final long HWND_BOTTOM = OS.HWND_BOTTOM;
 
 	public static final int SWP_NOSIZE = OS.SWP_NOSIZE;
 	public static final int SWP_NOMOVE = OS.SWP_NOMOVE;
@@ -36,7 +36,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return window text
 	 */
-	public static String GetWindowText(int hWnd) {
+	public static String GetWindowText(long hWnd) {
 		int size = OS.GetWindowTextLength(hWnd);
 		if (0 == size) {
 			return ""; //$NON-NLS-1$
@@ -53,7 +53,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return window class name
 	 */
-	public static String GetWindowClassName(int hWnd) {
+	public static String GetWindowClassName(long hWnd) {
 		TCHAR buffer = new TCHAR(0, 256);
 		return buffer.toString(0, OS
 				.GetClassName(hWnd, buffer, buffer.length()));
@@ -66,7 +66,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return window rectangle
 	 */
-	public static Rectangle GetWindowRectangle(int hWnd) {
+	public static Rectangle GetWindowRectangle(long hWnd) {
 		RECT rect = new RECT();
 		OS.GetWindowRect(hWnd, rect);
 		return new Rectangle(rect.left, rect.top, rect.right - rect.left,
@@ -80,7 +80,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return true if the target window is visible
 	 */
-	public static boolean IsWindowVisible(int hWnd) {
+	public static boolean IsWindowVisible(long hWnd) {
 		return OS.IsWindowVisible(hWnd);
 	}
 
@@ -89,7 +89,7 @@ public class WindowUtil {
 	 * 
 	 * @return desktop window
 	 */
-	public static int GetDesktopWindow() {
+	public static long GetDesktopWindow() {
 		return OS.GetDesktopWindow();
 	}
 
@@ -100,7 +100,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return child window of the target
 	 */
-	public static int GetChildWindow(int hWnd) {
+	public static long GetChildWindow(long hWnd) {
 		return OS.GetWindow(hWnd, OS.GW_CHILD);
 	}
 
@@ -111,7 +111,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return next window of the target
 	 */
-	public static int GetNextWindow(int hWnd) {
+	public static long GetNextWindow(long hWnd) {
 		return OS.GetWindow(hWnd, OS.GW_HWNDNEXT);
 	}
 
@@ -122,7 +122,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return owner window of the target
 	 */
-	public static int GetOwnerWindow(int hWnd) {
+	public static long GetOwnerWindow(long hWnd) {
 		return OS.GetWindow(hWnd, OS.GW_OWNER);
 	}
 
@@ -133,7 +133,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return parent window of the target
 	 */
-	public static int GetParentWindow(int hWnd) {
+	public static long GetParentWindow(long hWnd) {
 		return OS.GetParent(hWnd);
 	}
 
@@ -144,7 +144,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return true if the target is popup menu
 	 */
-	public static boolean isPopupMenu(int hwnd) {
+	public static boolean isPopupMenu(long hwnd) {
 		if ("#32768".equals(GetWindowClassName(hwnd))) { //$NON-NLS-1$
 			return 0 == GetOwnerWindow(hwnd);
 		}
@@ -160,9 +160,11 @@ public class WindowUtil {
 	 *            window name
 	 * @return target window, or null if not available
 	 */
-	public static int FindWindow(String windowClass, String windowName) {
-		return OS.FindWindow(new TCHAR(0, windowClass, true), new TCHAR(0,
-				windowName, true));
+	@Deprecated
+	public static long FindWindow(String windowClass, String windowName) {
+		return 0;
+//		return OS.FindWindow(new TCHAR(0, windowClass, true), new TCHAR(0,
+//				windowName, true));
 	}
 
 	/**
@@ -172,7 +174,7 @@ public class WindowUtil {
 	 *            target window
 	 * @return true if succeeded
 	 */
-	public static boolean BringWindowToTop(int hWnd) {
+	public static boolean BringWindowToTop(long hWnd) {
 		return OS.BringWindowToTop(hWnd);
 	}
 
@@ -197,7 +199,7 @@ public class WindowUtil {
 	 *            window sizing and positioning flags.
 	 * @return true if succeeded
 	 */
-	public static boolean SetWindowPos(int hWnd, int hWndInsertAfter, int X,
+	public static boolean SetWindowPos(long hWnd, long hWndInsertAfter, int X,
 			int Y, int cx, int cy, int uFlags) {
 		return OS.SetWindowPos(hWnd, hWndInsertAfter, X, Y, cx, cy, uFlags);
 	}
@@ -216,7 +218,7 @@ public class WindowUtil {
 
 	public static final int LWA_ALPHA = 0x02;
 
-	protected static final native int SetLayeredWindowAttributes(int hwnd,
+	protected static final native int SetLayeredWindowAttributes(long hwnd,
 			int crKey, char bAlpha, int dwFlags);
 
 }

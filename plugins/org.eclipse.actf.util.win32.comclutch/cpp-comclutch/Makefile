@@ -1,5 +1,5 @@
 ###############################################################################
-# Copyright (c) 2007 IBM Corporation and others.
+# Copyright (c) 2007, 2019 IBM Corporation and others.
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v1.0
 # which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ JAVAH_FLAGS = -classpath ../bin
 JAVA_INC = "$(JAVA_HOME)/include"
 BLD = ..\build
 CC = cl.exe
-CFLAGS = -c -Zi -Ox -I $(JAVA_INC)
+CFLAGS = -c -Zi -Ox -I $(JAVA_INC) -I $(JAVA_INC)/win32
 LINK = link.exe
 LDFLAGS = -debug -dll
 LIBS = User32.lib Oleacc.lib

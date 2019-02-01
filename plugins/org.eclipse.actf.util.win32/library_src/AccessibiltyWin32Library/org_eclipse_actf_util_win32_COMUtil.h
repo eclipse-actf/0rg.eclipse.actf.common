@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,64 +22,114 @@ extern "C" {
  * Method:    VtblCall
  * Signature: (III)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__III
-  (JNIEnv *, jclass, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__III
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJI
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint);
 
 /*
  * Class:     org_eclipse_actf_util_win32_COMUtil
  * Method:    VtblCall
  * Signature: (IIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIII
-  (JNIEnv *, jclass, jint, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIII
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJII
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint, jint);
 
 /*
  * Class:     org_eclipse_actf_util_win32_COMUtil
  * Method:    VtblCall
  * Signature: (IIIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIII
-  (JNIEnv *, jclass, jint, jint, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIII
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIII
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jint);
 
 /*
  * Class:     org_eclipse_actf_util_win32_COMUtil
  * Method:    VtblCall
  * Signature: (IIIIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIII
-  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIII
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIII
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jint, jint);
 
 /*
  * Class:     org_eclipse_actf_util_win32_COMUtil
  * Method:    VtblCall
  * Signature: (IIIIIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIII
-  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIII
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIIII
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jint, jint, jint);
 
 /*
  * Class:     org_eclipse_actf_util_win32_COMUtil
  * Method:    VtblCall
  * Signature: (IIIIIIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIIII
-  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIIII
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIIIII
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     org_eclipse_actf_util_win32_COMUtil
  * Method:    VtblCall
  * Signature: (IIIIIIIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIIIII
-  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIIIII
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIIIIII
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jint, jint, jint, jint, jint);
 
 /*
  * Class:     org_eclipse_actf_util_win32_COMUtil
  * Method:    VtblCall
  * Signature: (IIIIIIIIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIIIIII
-  (JNIEnv *, jclass, jint, jint, jint, jint, jint, jint, jint, jint, jint, jint);
+#ifndef _WIN64
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IIIIIIIIII
+#else
+	JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIIIIIII
+#endif
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jint, jint, jint, jint, jint, jint);
+
+JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIIJ
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jint, jlong);
+
+JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIJJ
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jlong, jlong);
+
+JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIJJJ
+  (JNIEnv *, jclass, jint, jintLong, jint, jlong, jlong, jlong);
+
+JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIJJJ
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jlong, jlong, jlong);
+
+JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIIJJJJ
+  (JNIEnv *, jclass, jint, jintLong, jint, jint, jlong, jlong, jlong, jlong);
+
+JNIEXPORT jint JNICALL Java_org_eclipse_actf_util_win32_COMUtil_VtblCall__IJIJJJJJ
+  (JNIEnv *, jclass, jint, jintLong, jint, jlong, jlong, jlong, jlong, jlong);
 
 #ifdef __cplusplus
 }

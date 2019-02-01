@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.swt.internal.win32.OS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewPart;
@@ -141,16 +142,16 @@ public class DeleteCacheAction implements IWorkbenchWindowActionDelegate {
 
 	private int countCacheEntries() {
 		int count = 1;
-		int pCacheEntry = MemoryUtil.GlobalAlloc(BUFFER_SIZE);
+		long pCacheEntry = MemoryUtil.GlobalAlloc(BUFFER_SIZE);
 		try {
 			int[] pSize = new int[] { BUFFER_SIZE };
 			MemoryUtil.MoveMemory(pCacheEntry, pSize, 4);
-			int hEnum = WinInet.FindFirstUrlCacheEntryW(0, pCacheEntry, pSize);
+			long hEnum = WinInet.FindFirstUrlCacheEntryW(0, pCacheEntry, pSize);
 			if (0 != hEnum) {
 				while (true) {
-					int[] pEntries = new int[20];
-					MemoryUtil.MoveMemory(pEntries, pCacheEntry,
-							4 * pEntries.length);
+					long[] pEntries = new long[20];
+					OS.MoveMemory(pEntries, pCacheEntry,
+							8 * pEntries.length);
 					if (0 == (pEntries[3] & 0x00300000)) { // Skip Cookie &
 															// History
 						String localFileName = new WSTR(pEntries[2])
@@ -190,16 +191,16 @@ public class DeleteCacheAction implements IWorkbenchWindowActionDelegate {
 	private void deleteCacheEntries(IProgressMonitor monitor, int total) {
 		int count = 0;
 
-		int pCacheEntry = MemoryUtil.GlobalAlloc(BUFFER_SIZE);
+		long pCacheEntry = MemoryUtil.GlobalAlloc(BUFFER_SIZE);
 		try {
 			int[] pSize = new int[] { BUFFER_SIZE };
 			MemoryUtil.MoveMemory(pCacheEntry, pSize, 4);
-			int hEnum = WinInet.FindFirstUrlCacheEntryW(0, pCacheEntry, pSize);
+			long hEnum = WinInet.FindFirstUrlCacheEntryW(0, pCacheEntry, pSize);
 			if (0 != hEnum) {
 				while (monitor == null || !monitor.isCanceled()) {
-					int[] pEntries = new int[20];
-					MemoryUtil.MoveMemory(pEntries, pCacheEntry,
-							4 * pEntries.length);
+					long[] pEntries = new long[20];
+					OS.MoveMemory(pEntries, pCacheEntry,
+							8 * pEntries.length);
 					if (0 == (pEntries[3] & 0x00300000)) { // Skip Cookie &
 															// History
 						String localFileName = new WSTR(pEntries[2])

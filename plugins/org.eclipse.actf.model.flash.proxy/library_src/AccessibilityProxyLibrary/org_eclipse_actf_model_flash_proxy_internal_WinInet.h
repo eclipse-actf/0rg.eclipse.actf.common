@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -206,8 +206,8 @@ extern "C" {
  * Method:    InternetOpenW
  * Signature: (IIIII)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetOpenW
-  (JNIEnv *, jclass, jint, jint, jint, jint, jint);
+JNIEXPORT jintLong JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetOpenW
+  (JNIEnv *, jclass, jintLong, jint, jintLong, jintLong, jint);
 
 /*
  * Class:     org_eclipse_actf_model_flash_proxy_internal_WinInet
@@ -215,7 +215,7 @@ JNIEXPORT jint JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_
  * Signature: (I)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetCloseHandle
-  (JNIEnv *, jclass, jint);
+  (JNIEnv *, jclass, jintLong);
 
 /*
  * Class:     org_eclipse_actf_model_flash_proxy_internal_WinInet
@@ -223,7 +223,7 @@ JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinI
  * Signature: (IIII)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetSetOptionW
-  (JNIEnv *, jclass, jint, jint, jint, jint);
+  (JNIEnv *, jclass, jintLong, jint, jintLong, jint);
 
 /*
  * Class:     org_eclipse_actf_model_flash_proxy_internal_WinInet
@@ -231,15 +231,15 @@ JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinI
  * Signature: (III[I)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetQueryOptionW
-  (JNIEnv *, jclass, jint, jint, jint, jintArray);
+  (JNIEnv *, jclass, jintLong, jint, jintLong, jintArray);
 
 /*
  * Class:     org_eclipse_actf_model_flash_proxy_internal_WinInet
  * Method:    FindFirstUrlCacheEntryW
  * Signature: (II[I)I
  */
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindFirstUrlCacheEntryW
-  (JNIEnv *, jclass, jint, jint, jintArray);
+JNIEXPORT jintLong JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindFirstUrlCacheEntryW
+  (JNIEnv *, jclass, jintLong, jintLong, jintArray);
 
 /*
  * Class:     org_eclipse_actf_model_flash_proxy_internal_WinInet
@@ -247,7 +247,7 @@ JNIEXPORT jint JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_
  * Signature: (II[I)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindNextUrlCacheEntryW
-  (JNIEnv *, jclass, jint, jint, jintArray);
+  (JNIEnv *, jclass, jintLong, jintLong, jintArray);
 
 /*
  * Class:     org_eclipse_actf_model_flash_proxy_internal_WinInet
@@ -255,7 +255,7 @@ JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinI
  * Signature: (I)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindCloseUrlCache
-  (JNIEnv *, jclass, jint);
+  (JNIEnv *, jclass, jintLong);
 
 /*
  * Class:     org_eclipse_actf_model_flash_proxy_internal_WinInet
@@ -263,7 +263,7 @@ JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinI
  * Signature: (I)Z
  */
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_DeleteUrlCacheEntryW
-  (JNIEnv *, jclass, jint);
+  (JNIEnv *, jclass, jintLong);
 
 #ifdef __cplusplus
 }

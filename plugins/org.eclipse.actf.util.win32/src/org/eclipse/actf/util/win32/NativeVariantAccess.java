@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.eclipse.actf.util.win32;
 
 import org.eclipse.swt.internal.ole.win32.COM;
 import org.eclipse.swt.internal.ole.win32.IDispatch;
+import org.eclipse.swt.internal.win32.OS;
 import org.eclipse.swt.ole.win32.OLE;
 import org.eclipse.swt.ole.win32.Variant;
 
@@ -23,7 +24,7 @@ import org.eclipse.swt.ole.win32.Variant;
 public class NativeVariantAccess {
 	private int size;
 
-	private int pVariantAddress;
+	private long pVariantAddress;
 
 	/**
 	 * Constructor of the class (size=1)
@@ -59,7 +60,7 @@ public class NativeVariantAccess {
 	/**
 	 * @return native address (index=0)
 	 */
-	public int getAddress() {
+	public long getAddress() {
 		return getAddress(0);
 	}
 
@@ -68,7 +69,7 @@ public class NativeVariantAccess {
 	 *            target index
 	 * @return native address at the index
 	 */
-	public int getAddress(int index) {
+	public long getAddress(int index) {
 		return pVariantAddress + Variant.sizeof * index;
 	}
 
@@ -125,8 +126,8 @@ public class NativeVariantAccess {
 	 */
 	public IDispatch getDispatch(int index) {
 		if (OLE.VT_DISPATCH == getType(index)) {
-			int[] pInt = new int[1];
-			MemoryUtil.MoveMemory(pInt, getAddress(index) + 8, 4);
+			long[] pInt = new long[1];
+			OS.MoveMemory(pInt, getAddress(index) + 8, 8);
 			return new IDispatch(pInt[0]);
 		}
 		return null;
@@ -146,8 +147,8 @@ public class NativeVariantAccess {
 	 */
 	public String getString(int index) {
 		if (OLE.VT_BSTR == getType(index)) {
-			int[] hMem = new int[1];
-			MemoryUtil.MoveMemory(hMem, getAddress(index) + 8, 4);
+			long[] hMem = new long[1];
+			OS.MoveMemory(hMem, getAddress(index) + 8, OS.PTR_SIZEOF);
 			if (0 != hMem[0]) {
 				int size = COM.SysStringByteLen(hMem[0]);
 				if (size > 0) {
@@ -182,6 +183,36 @@ public class NativeVariantAccess {
 			return new Variant();
 		}
 		return null;
+	}
+
+	/**
+	 * @param variant
+	 *            variant
+	 */
+	public void setVariant(Variant variant) {
+		setVariant(0, variant);
+	}
+
+	/**
+	 * @param index
+	 *            target index
+	 * @param variant
+	 *            variant
+	 */
+	public void setVariant(int index, Variant variant) {
+		long address = getAddress(index);
+		COM.VariantClear(address);
+		short type = variant.getType(); 
+        COM.MoveMemory(address, new short[] {type}, 2);
+		switch (type) {
+		case OLE.VT_I4:
+			COM.MoveMemory(address + 8, new int[]{variant.getInt()}, 4);
+			break;
+		case OLE.VT_BSTR:
+			char[] data = (variant.getString()+"\0").toCharArray();
+			COM.MoveMemory(address + 8, new long [] {COM.SysAllocString(data)}, OS.PTR_SIZEOF);
+			break;
+		}
 	}
 
 }

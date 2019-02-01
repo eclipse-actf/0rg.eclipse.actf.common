@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,26 +11,26 @@
 #include "stdafx.h"
 #include "org_eclipse_actf_model_flash_proxy_internal_WinInet.h"
 
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetOpenW
-  (JNIEnv *env, jclass that, jint lpszAgent, jint dwAccessType, jint lpszProxy, jint lpszProxyBypass, jint dwFlags) 
+JNIEXPORT jintLong JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetOpenW
+  (JNIEnv *env, jclass that, jintLong lpszAgent, jint dwAccessType, jintLong lpszProxy, jintLong lpszProxyBypass, jint dwFlags) 
 {
-	return (jint)InternetOpenW((LPWSTR)lpszAgent, dwAccessType, (LPWSTR)lpszProxy, (LPWSTR)lpszProxyBypass, dwFlags);
+	return (jintLong)InternetOpenW((LPWSTR)lpszAgent, dwAccessType, (LPWSTR)lpszProxy, (LPWSTR)lpszProxyBypass, dwFlags);
 }
 
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetCloseHandle
-  (JNIEnv *env, jclass that, jint hInternet)
+  (JNIEnv *env, jclass that, jintLong hInternet)
 {
 	return InternetCloseHandle((HINTERNET)hInternet);
 }
 
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetSetOptionW
-  (JNIEnv *env, jclass that, jint hInternet, jint dwOption, jint lpBuffer, jint dwBufferLength)
+  (JNIEnv *env, jclass that, jintLong hInternet, jint dwOption, jintLong lpBuffer, jint dwBufferLength)
 {
 	return InternetSetOptionW((HINTERNET)hInternet, dwOption, (LPVOID)lpBuffer, dwBufferLength);
 }
 
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_InternetQueryOptionW
-  (JNIEnv *env, jclass that, jint hInternet, jint dwOption, jint lpBuffer, jintArray lpdwBufferLength)
+  (JNIEnv *env, jclass that, jintLong hInternet, jint dwOption, jintLong lpBuffer, jintArray lpdwBufferLength)
 {
 	jint *lpNativeLength = NULL;
 	if( lpdwBufferLength ) {
@@ -43,8 +43,8 @@ JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinI
 	return rc;
 }
 
-JNIEXPORT jint JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindFirstUrlCacheEntryW
-  (JNIEnv *env, jclass that, jint lpszUrlSearchPattern, jint lpFirstCacheEntryInfo, jintArray lpcbCacheEntryInfo)
+JNIEXPORT jintLong JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindFirstUrlCacheEntryW
+  (JNIEnv *env, jclass that, jintLong lpszUrlSearchPattern, jintLong lpFirstCacheEntryInfo, jintArray lpcbCacheEntryInfo)
 {
 	jint *lpNativeLength = NULL;
 	if( lpcbCacheEntryInfo ) {
@@ -54,11 +54,11 @@ JNIEXPORT jint JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_
 	if( lpcbCacheEntryInfo && lpNativeLength ) {
 		env->ReleaseIntArrayElements(lpcbCacheEntryInfo,lpNativeLength,0);
 	}
-	return (jint)handle;
+	return (jintLong)handle;
 }
 
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindNextUrlCacheEntryW
-  (JNIEnv *env, jclass that, jint hEnumHandle, jint lpNextCacheEntryInfo, jintArray lpcbCacheEntryInfo)
+  (JNIEnv *env, jclass that, jintLong hEnumHandle, jintLong lpNextCacheEntryInfo, jintArray lpcbCacheEntryInfo)
 {
 	jint *lpNativeLength = NULL;
 	if( lpcbCacheEntryInfo ) {
@@ -72,13 +72,13 @@ JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinI
 }
 
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_FindCloseUrlCache
-  (JNIEnv *env, jclass that, jint hEnumHandle)
+  (JNIEnv *env, jclass that, jintLong hEnumHandle)
 {
 	return FindCloseUrlCache((HANDLE)hEnumHandle);
 }
 
 JNIEXPORT jboolean JNICALL Java_org_eclipse_actf_model_flash_proxy_internal_WinInet_DeleteUrlCacheEntryW
-  (JNIEnv *env, jclass that, jint lpszUrlName)
+  (JNIEnv *env, jclass that, jintLong lpszUrlName)
 {
 	return DeleteUrlCacheEntryW((LPWSTR)lpszUrlName);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -124,14 +124,14 @@ public class WinInet {
     public static final int INTERNET_LAST_OPTION                    = INTERNET_OPTION_DATAFILE_EXT;
 
     /** Natives */
-    public static final native int InternetOpenW(int lpszAgent, int dwAccessType, int lpszProxy, int lpszProxyBypass, int dwFlags);
-    public static final native boolean InternetCloseHandle(int hInternet);
-    public static final native boolean InternetSetOptionW(int hInternet, int dwOption, int lpBuffer, int dwBufferLength);
-    public static final native boolean InternetQueryOptionW(int hInternet, int dwOption, int lpBuffer, int[] lpdwBufferLength);
+    public static final native long InternetOpenW(long lpszAgent, int dwAccessType, long lpszProxy, long lpszProxyBypass, int dwFlags);
+    public static final native boolean InternetCloseHandle(long hInternet);
+    public static final native boolean InternetSetOptionW(long hInternet, int dwOption, long lpBuffer, int dwBufferLength);
+    public static final native boolean InternetQueryOptionW(long hInternet, int dwOption, long lpBuffer, int[] lpdwBufferLength);
     
-    public static final native int FindFirstUrlCacheEntryW(int lpszUrlSearchPattern,int lpFirstCacheEntryInfo, int[] lpcbCacheEntryInfo);
-    public static final native boolean FindNextUrlCacheEntryW(int hEnumHandle,int lpNextCacheEntryInfo,int[] lpcbCacheEntryInfo);
-    public static final native boolean FindCloseUrlCache(int hEnumHandle);
-    public static final native boolean DeleteUrlCacheEntryW(int lpszUrlName);
+    public static final native long FindFirstUrlCacheEntryW(long lpszUrlSearchPattern,long lpFirstCacheEntryInfo, int[] lpcbCacheEntryInfo);
+    public static final native boolean FindNextUrlCacheEntryW(long hEnumHandle,long lpNextCacheEntryInfo,int[] lpcbCacheEntryInfo);
+    public static final native boolean FindCloseUrlCache(long hEnumHandle);
+    public static final native boolean DeleteUrlCacheEntryW(long lpszUrlName);
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,16 @@
 package org.eclipse.actf.util.win32;
 
 import org.eclipse.swt.internal.ole.win32.COM;
+import org.eclipse.swt.internal.win32.OS;
 
 /**
  * Utility class to access native String
  */
 @SuppressWarnings("restriction")
 public class NativeStringAccess {
-	private int pBSTRAddress = 0;
+	private long pBSTRAddress = 0;
 
-	private int[] hMem = new int[1];
+	private long[] hMem = new long[1];
 
 	/**
 	 * Constructor of the class
@@ -42,7 +43,7 @@ public class NativeStringAccess {
 	/**
 	 * @return native address
 	 */
-	public int getAddress() {
+	public long getAddress() {
 		return pBSTRAddress;
 	}
 
@@ -50,7 +51,7 @@ public class NativeStringAccess {
 	 * @return string value
 	 */
 	public String getString() {
-		MemoryUtil.MoveMemory(hMem, pBSTRAddress, 4);
+		OS.MoveMemory(hMem, pBSTRAddress, 8);
 		if (0 != hMem[0]) {
 			int size = COM.SysStringByteLen(hMem[0]);
 			if (size > 0) {
@@ -68,13 +69,13 @@ public class NativeStringAccess {
 	 * @param text
 	 */
 	public void setString(String text) {
-		MemoryUtil.MoveMemory(hMem, pBSTRAddress, 4);
+		OS.MoveMemory(hMem, pBSTRAddress, 8);
 		if (0 != hMem[0]) {
 			COM.SysFreeString(hMem[0]);
 		}
 		char[] data = (text + "\0").toCharArray(); //$NON-NLS-1$
-		int ptr = COM.SysAllocString(data);
-		COM.MoveMemory(pBSTRAddress, new int[] { ptr }, 4);
-		MemoryUtil.MoveMemory(hMem, pBSTRAddress, 4);
+		long ptr = COM.SysAllocString(data);
+		COM.MoveMemory(pBSTRAddress, new long[] { ptr }, 8);
+		OS.MoveMemory(hMem, pBSTRAddress, 8);
 	}
 }

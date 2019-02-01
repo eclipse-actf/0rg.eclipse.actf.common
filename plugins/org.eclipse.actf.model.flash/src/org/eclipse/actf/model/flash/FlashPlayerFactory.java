@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 IBM Corporation and Others
+ * Copyright (c) 2008, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ public class FlashPlayerFactory {
 	 *            target pointer
 	 * @return {@link IFlashPlayer} instance or null if not available
 	 */
-	public static IFlashPlayer getPlayerFromPtr(int ptr) {
+	public static IFlashPlayer getPlayerFromPtr(long ptr) {
 		IUnknown accObject = ComService.newIUnknown(ResourceManager
 				.newResourceManager(null), ptr, true);
 		IDispatch idisp = FlashMSAAUtil.getHtmlElementFromObject(accObject);
@@ -48,7 +48,7 @@ public class FlashPlayerFactory {
 	 *            target window handle
 	 * @return {@link IFlashPlayer} instance or null if not available
 	 */
-	public static IFlashPlayer getPlayerFromWindow(int hwnd) {
+	public static IFlashPlayer getPlayerFromWindow(long hwnd) {
 		FlashMSAAObject accObject = FlashMSAAObjectFactory
 				.getFlashMSAAObjectFromWindow(hwnd);
 		IDispatch idisp = FlashMSAAUtil.getHtmlElementFromObject(accObject);

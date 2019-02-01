@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ public class INTERNET_PER_CONN_OPTION {
     public int dwOption;     
     public int dwValue;
     public WSTR strValue = new WSTR();
-    public static final int sizeof = 12; // +4 for FILETIME
+    public static final int sizeof = 12; // +4 for FILETIME and LPTSTR
     
     //
     //  Options used in INTERNET_PER_CONN_OPTON struct
@@ -50,7 +50,7 @@ public class INTERNET_PER_CONN_OPTION {
     private static final int VALUE_FILETIME = 2;
 
     
-    public void getData(int pData) {
+    public void getData(long pData) {
         if( 0 != pData ) {
             MemoryUtil.MoveMemory(pData,new int[]{dwOption,0,0},4*3);
             switch( getValueType() ) {
@@ -58,13 +58,13 @@ public class INTERNET_PER_CONN_OPTION {
                 	MemoryUtil.MoveMemory(pData+4,new int[]{dwValue},4);
                     break;
                 case VALUE_STRING:
-                	MemoryUtil.MoveMemory(pData+4, new int[] {strValue.getAddress()}, 4);
+                	MemoryUtil.MoveMemory(pData+4, new long[] {strValue.getAddress()}, 8);
                     break;
             }
         }
     }
     
-    public void setData(int pData) {
+    public void setData(long pData) {
         if( 0 != pData ) {
             int[] pOption = new int[3];
             MemoryUtil.MoveMemory(pOption,pData,4*pOption.length);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ public class FlashMSAAUtil {
 	 *            the address of IAccessible
 	 * @return whether the target is a Flash object or not.
 	 */
-	public static boolean isFlash(int iacc) {
+	public static boolean isFlash(long iacc) {
 		FlashMSAAObject acc = FlashMSAAObjectFactory
 				.getFlashMSAAObjectFromPtr(iacc);
 		return isFlash(acc);
@@ -53,7 +53,7 @@ public class FlashMSAAUtil {
 	 *         not. Invisible means that the Flash object is in window-less
 	 *         mode.
 	 */
-	public static boolean isInvisibleFlash(int iacc) {
+	public static boolean isInvisibleFlash(long iacc) {
 		FlashMSAAObject acc = FlashMSAAObjectFactory
 				.getFlashMSAAObjectFromPtr(iacc);
 		return isInvisibleFlash(acc);
@@ -65,7 +65,7 @@ public class FlashMSAAUtil {
 	 * @return array {@link IFlashPlayer} that are descendant of the root
 	 *         window. It is same as getFlashPlayers(hwnd, false, false).
 	 */
-	public static IFlashPlayer[] getFlashPlayers(int hwnd) {
+	public static IFlashPlayer[] getFlashPlayers(long hwnd) {
 		return getFlashPlayers(hwnd, SHOW_OFFSCREEN, SCAN_ALL);
 	}
 
@@ -79,7 +79,7 @@ public class FlashMSAAUtil {
 	 * @return array {@link IFlashPlayer} that are descendant of the root
 	 *         window.
 	 */
-	public static IFlashPlayer[] getFlashPlayers(int hwnd,
+	public static IFlashPlayer[] getFlashPlayers(long hwnd,
 			boolean showOffScreen, boolean scanAll) {
 		FlashMSAAObject acc = FlashMSAAObjectFactory
 				.getFlashMSAAObjectFromWindow(hwnd);
@@ -205,15 +205,15 @@ public class FlashMSAAUtil {
 			}
 		}
 
-		private static int findFlashWindow(int hwnd) {
+		private static long findFlashWindow(long hwnd) {
 			if (0 != hwnd) {
 				if (FlashMSAAUtil.isFlashClass(WindowUtil
 						.GetWindowClassName(hwnd))) {
 					return hwnd;
 				}
-				for (int hwndChild = WindowUtil.GetChildWindow(hwnd); 0 != hwndChild; hwndChild = WindowUtil
+				for (long hwndChild = WindowUtil.GetChildWindow(hwnd); 0 != hwndChild; hwndChild = WindowUtil
 						.GetNextWindow(hwndChild)) {
-					int hwndFound = findFlashWindow(hwndChild);
+					long hwndFound = findFlashWindow(hwndChild);
 					if (0 != hwndFound) {
 						return hwndFound;
 					}
@@ -260,7 +260,7 @@ public class FlashMSAAUtil {
 	 *            the address of IAccessible
 	 * @return the HTML element interface of the <i>objUnknown</i>.
 	 */
-	public static IDispatch getHtmlElementFromPtr(int iacc) {
+	public static IDispatch getHtmlElementFromPtr(long iacc) {
 		FlashMSAAObject acc = FlashMSAAObjectFactory
 				.getFlashMSAAObjectFromPtr(iacc);
 		return getHtmlElementFromObject(acc);
@@ -273,7 +273,7 @@ public class FlashMSAAUtil {
 	 *            target attribute name
 	 * @return the attribute value string.
 	 */
-	public static String getHtmlAttribute(int iacc, String name) {
+	public static String getHtmlAttribute(long iacc, String name) {
 		FlashMSAAObject acc = FlashMSAAObjectFactory
 				.getFlashMSAAObjectFromPtr(iacc);
 		return getHtmlAttribute(acc, name);

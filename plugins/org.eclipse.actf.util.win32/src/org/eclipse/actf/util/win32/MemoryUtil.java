@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ public class MemoryUtil {
 	 *            size
 	 * @return pointer
 	 */
-	public static int GlobalAlloc(int dwBytes) {
+	public static long GlobalAlloc(int dwBytes) {
 		return OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT, dwBytes);
 	}
 
@@ -38,7 +38,7 @@ public class MemoryUtil {
 	 *            target memory
 	 * @return return code
 	 */
-	public static int GlobalFree(int hMem) {
+	public static long GlobalFree(long hMem) {
 		return OS.GlobalFree(hMem);
 	}
 
@@ -49,7 +49,7 @@ public class MemoryUtil {
 	 *            target String as array of char
 	 * @return BSTR pointer
 	 */
-	public static int SysAllocString(char[] sz) {
+	public static long SysAllocString(char[] sz) {
 		return COM.SysAllocString(sz);
 	}
 
@@ -59,7 +59,7 @@ public class MemoryUtil {
 	 * @param bstr
 	 *            target BSTR pointer
 	 */
-	public static void SysFreeString(int bstr) {
+	public static void SysFreeString(long bstr) {
 		COM.SysFreeString(bstr);
 	}
 
@@ -70,7 +70,7 @@ public class MemoryUtil {
 	 * @param Source
 	 * @param Length
 	 */
-	public static void MoveMemory(int[] Destination, int Source, int Length) {
+	public static void MoveMemory(int[] Destination, long Source, int Length) {
 		OS.MoveMemory(Destination, Source, Length);
 	}
 
@@ -81,7 +81,7 @@ public class MemoryUtil {
 	 * @param SourcePtr
 	 * @param Length
 	 */
-	public static void MoveMemory(short[] Destination, int SourcePtr, int Length) {
+	public static void MoveMemory(short[] Destination, long SourcePtr, int Length) {
 		OS.MoveMemory(Destination, SourcePtr, Length);
 	}
 
@@ -92,7 +92,7 @@ public class MemoryUtil {
 	 * @param SourcePtr
 	 * @param Length
 	 */
-	public static void MoveMemory(char[] Destination, int SourcePtr, int Length) {
+	public static void MoveMemory(char[] Destination, long SourcePtr, int Length) {
 		OS.MoveMemory(Destination, SourcePtr, Length);
 	}
 
@@ -103,7 +103,7 @@ public class MemoryUtil {
 	 * @param Source
 	 * @param Length
 	 */
-	public static void MoveMemory(int DestinationPtr, short[] Source, int Length) {
+	public static void MoveMemory(long DestinationPtr, short[] Source, int Length) {
 		OS.MoveMemory(DestinationPtr, Source, Length);
 	}
 
@@ -114,7 +114,7 @@ public class MemoryUtil {
 	 * @param Source
 	 * @param Length
 	 */
-	public static void MoveMemory(int DestinationPtr, int[] Source, int Length) {
+	public static void MoveMemory(long DestinationPtr, int[] Source, int Length) {
 		OS.MoveMemory(DestinationPtr, Source, Length);
 	}
 
@@ -125,7 +125,18 @@ public class MemoryUtil {
 	 * @param Source
 	 * @param Length
 	 */
-	public static void MoveMemory(int DestinationPtr, char[] Source, int Length) {
+	public static void MoveMemory(long DestinationPtr, long[] Source, int Length) {
+		OS.MoveMemory(DestinationPtr, Source, Length);
+	}
+
+	/**
+	 * MoveMemory
+	 * 
+	 * @param DestinationPtr
+	 * @param Source
+	 * @param Length
+	 */
+	public static void MoveMemory(long DestinationPtr, char[] Source, int Length) {
 		OS.MoveMemory(DestinationPtr, Source, Length);
 	}
 

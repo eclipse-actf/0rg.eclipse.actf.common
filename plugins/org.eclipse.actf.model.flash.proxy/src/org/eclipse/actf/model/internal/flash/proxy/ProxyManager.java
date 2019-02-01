@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and Others
+ * Copyright (c) 2007, 2019 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -71,8 +71,8 @@ public class ProxyManager {
 	}
 
     private INTERNET_PER_CONN_OPTION_LIST savedList;
-    private int savedAddress;
-    private int hSession;
+    private long savedAddress;
+    private long hSession;
     private boolean needRestore = false;
     private int currentPort = 0;
     private static String PROTCOL_HTTP =   "http"; //$NON-NLS-1$
@@ -159,7 +159,7 @@ public class ProxyManager {
                 list.perConnOptions[0].dwValue=INTERNET_PER_CONN_OPTION.PROXY_TYPE_AUTO_PROXY_URL | INTERNET_PER_CONN_OPTION.PROXY_TYPE_DIRECT;
                 list.perConnOptions[1].dwOption=INTERNET_PER_CONN_OPTION.INTERNET_PER_CONN_AUTOCONFIG_URL;
                 list.perConnOptions[1].strValue.setString(getAutoConfigURL(isGlobal||forceProxy));
-                int address = MemoryUtil.GlobalAlloc(INTERNET_PER_CONN_OPTION_LIST.sizeof);
+                long address = MemoryUtil.GlobalAlloc(INTERNET_PER_CONN_OPTION_LIST.sizeof);
                 list.getData(address);
                 invokeSetOption(hSession, address);
                 invokeSetOption(0, isGlobal ? address : savedAddress);
@@ -185,7 +185,7 @@ public class ProxyManager {
         }
     }
 
-    private void invokeSetOption(int handle, int address) {
+    private void invokeSetOption(long handle, long address) {
         WinInet.InternetSetOptionW(handle,WinInet.INTERNET_OPTION_PER_CONNECTION_OPTION,address,INTERNET_PER_CONN_OPTION_LIST.sizeof);
         WinInet.InternetSetOptionW(handle,WinInet.INTERNET_OPTION_SETTINGS_CHANGED,0,0);
         WinInet.InternetSetOptionW(handle,WinInet.INTERNET_OPTION_REFRESH,0,0);
