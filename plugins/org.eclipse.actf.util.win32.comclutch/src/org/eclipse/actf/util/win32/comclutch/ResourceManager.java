@@ -29,14 +29,16 @@ public class ResourceManager {
 	private WeakReference<IResource> resourceHashArray[] = new WeakReference[HASHSIZE];
 
 	/**
-	 * @param ptr
-	 *            the reference pointer to be searched
-	 * @return the instance of IResource having ptr. It returns null if resource
-	 *         is not found.
+	 * @param ptr the reference pointer to be searched
+	 * @return the instance of IResource having ptr. It returns null if resource is
+	 *         not found.
 	 */
 	public IResource findInResource(long ptr) {
-//		int idx = (int) ptr % HASHSIZE;
-		int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE);
+
+		// int idx = (int) ptr % HASHSIZE;
+		// int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE); //for Java 8
+		int idx = (int) ((ptr & 0xffffffffL) % HASHSIZE); // tmp for Java 1.7
+
 		WeakReference<IResource> wr = resourceHashArray[idx];
 		if (wr == null)
 			return null;
@@ -51,8 +53,7 @@ public class ResourceManager {
 	/**
 	 * All resources will be released.
 	 * 
-	 * @param except
-	 *            the resource to be excluded from the clearance
+	 * @param except the resource to be excluded from the clearance
 	 */
 	public void releaseAll(IResource except) {
 		int len = resourceHashArray.length;
@@ -77,13 +78,14 @@ public class ResourceManager {
 	}
 
 	/**
-	 * @param resource
-	 *            the resource to be removed from the manager
+	 * @param resource the resource to be removed from the manager
 	 */
 	public void removeResource(IResource resource) {
 		long ptr = resource.getPtr();
-//		int idx = (int) ptr % HASHSIZE;
-		int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE);
+		// int idx = (int) ptr % HASHSIZE;
+		// int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE); //for Java 8
+		int idx = (int) ((ptr & 0xffffffffL) % HASHSIZE); // tmp for Java 1.7
+
 		WeakReference<IResource> wr = resourceHashArray[idx];
 		if (wr == null)
 			return;
@@ -100,21 +102,21 @@ public class ResourceManager {
 	}
 
 	/**
-	 * @param target
-	 *            the resource to be added to the manager
+	 * @param target the resource to be added to the manager
 	 */
 	public void addResource(IResource target) {
 		long ptr = target.getPtr();
-//		int idx = (int) ptr % HASHSIZE;
-		int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE);
+		// int idx = (int) ptr % HASHSIZE;
+		//int idx = Integer.remainderUnsigned((int)ptr, HASHSIZE); //for Java 8
+		int idx = (int) ((ptr & 0xffffffffL) % HASHSIZE); // tmp for Java 1.7
+
 		WeakReference<IResource> wr = new WeakReference<IResource>(target);
 		resourceHashArray[idx] = wr;
 		return;
 	}
 
 	/**
-	 * @param parent
-	 *            the parent resource manager
+	 * @param parent the parent resource manager
 	 * @return the new instance of ResourceManager has the parent
 	 */
 	public static ResourceManager newResourceManager(ResourceManager parent) {
